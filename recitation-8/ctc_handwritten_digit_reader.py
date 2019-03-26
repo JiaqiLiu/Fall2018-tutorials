@@ -26,7 +26,7 @@ data, labels = np.load("dataset/data.npy"), np.load("dataset/labels.npy")
 print(data.shape)
 print(labels.shape)
 
-train = False
+train = True
 model_file = "example.pt" if not train else "models/checkpoint.pt"
 if train:
   ctc_model.run()

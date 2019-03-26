@@ -105,7 +105,6 @@ class ER:
       print(type(labels))
       print(f'pred: {pred}')
       print(f'true: {true}')
-      raise
     assert pos == labels.size(0)
     return ls / output.size(0)
 
@@ -150,6 +149,9 @@ def run():
 
   height, width = data.size()[1:]
   label_sequence_length = labels.size()[-1]
+  # `labels` is one hot
+  print(f'labels: {labels.size()}')
+  print(f'label_sequence_length: {label_sequence_length}')
 
   target_lengths = torch.zeros((batch_size,)).fill_(label_sequence_length)
   ctc = CTCCriterion()
