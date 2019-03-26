@@ -6,7 +6,6 @@ import os
 import ctc_model
 import matplotlib.pyplot as plt
 from matplotlib.pyplot import imshow
-%matplotlib inline
 
 # seed for reproducibility
 np.random.seed(785)
