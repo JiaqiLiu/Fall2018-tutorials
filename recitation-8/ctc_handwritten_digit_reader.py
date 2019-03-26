@@ -59,8 +59,8 @@ for i in range(output.size(0)):
   image = data_batch[i].numpy()
   plt.figure()
   # imshow(image, cmap='binary')
-  from scipy.misc import imsave
-  imsave("img_{}.png".format("".join(chrs)), image)
+  import imageio
+  imageio.imwrite("img_{}.png".format("".join(chrs)), image)
   txt_top = "Prediction: {}".format("".join(chrs))
   txt_bottom = "Labelling:  {}".format(
       "".join(label_batch[i].numpy().astype(str)))

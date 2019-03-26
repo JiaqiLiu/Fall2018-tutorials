@@ -3,7 +3,6 @@ from torchvision import datasets, transforms
 import random
 import numpy as np
 from random import randint as rint
-from scipy.misc import imsave
 import os
 
 
@@ -60,7 +59,8 @@ def make():
     images.append(img)
     name = './images/img_' + \
         ''.join(map(lambda x: str(int(x)), dataset_labels[i])) + '.png'
-    imsave(name, img.clip(0, 255))
+    import imageio
+    imageio.imwrite(name, img.clip(0, 255))
   dataset_data = np.array(images)
 
   if not os.path.exists('./dataset'):
