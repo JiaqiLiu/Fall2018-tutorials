@@ -44,9 +44,13 @@ class DigitsModel(nn.Module):
 
   def forward(self, features):
     # features: n, 1, h, w
+    # features: [32, 1, 36, 172]
     embedding = self.embed(features)
     n, c, h, w = embedding.size()
+    # embedding.size(): [32, 32, 9, 86]
     embedding = embedding.view(n, c * h, w).permute(2, 0, 1)
+    print(f'embedding: {embedding.size()}')
+    # embedding: [86, 32, 288]
     # embed: t, n, f
     h = embedding
     for l in self.rnns:
@@ -138,7 +142,12 @@ def run():
   model = model.cuda() if torch.cuda.is_available() else model
 
   labels = torch.Tensor(np.load('dataset/labels.npy')).type(torch.LongTensor)
+  print(f'labels: {labels[:3]}')
+  '''[[1, 7, 0, 0, 8, 0, 0, 7, 2, 9],
+      [4, 3, 9, 4, 5, 1, 2, 5, 3, 3],
+      [6, 9, 7, 8, 0, 5, 6, 5, 2, 3]]'''
   data = torch.Tensor(np.load('dataset/data.npy'))
+  # data: (20000, 36, 172)
 
   # 80/20 train/val split
   cutoff = int(0.8 * len(labels))
@@ -147,13 +156,13 @@ def run():
   loader = DataLoader(dataset, shuffle=True, batch_size=batch_size)
   optimizer = optim.Adam(model.parameters(), lr=1e-4)
 
-  height, width = data.size()[1:]
-  label_sequence_length = labels.size()[-1]
-  # `labels` is one hot
-  print(f'labels: {labels.size()}')
-  print(f'label_sequence_length: {label_sequence_length}')
+  height, width = data.size()[1:] # 36, 172
+  label_sequence_length = labels.size()[-1]  # 10
 
   target_lengths = torch.zeros((batch_size,)).fill_(label_sequence_length)
+  print(f'target_lengths: {target_lengths}')
+  # [10., 10., 10., 10., ..., 10., 10., 10.]
+
   ctc = CTCCriterion()
   for e in range(epochs):
     epoch_loss = 0
@@ -161,7 +170,11 @@ def run():
       optimizer.zero_grad()
       if torch.cuda.is_available():
         data_batch = data_batch.cuda()
+      # data_batch: [32, 36, 172]
+      # Why unsqueeze? See model input
       logits, input_lengths = model(data_batch.unsqueeze(1))
+      # logits size: [86, 32, 11]
+      print(f'logits: {logits.size()}')
       loss = ctc.forward((logits, input_lengths, target_lengths), label_batch)
       loss.backward()
       optimizer.step()

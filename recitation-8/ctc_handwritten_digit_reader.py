@@ -25,11 +25,15 @@ data, labels = np.load("dataset/data.npy"), np.load("dataset/labels.npy")
 
 print(data.shape)
 print(labels.shape)
+# (20000, 36, 172)
+# (20000, 10)
 
 train = True
 model_file = "example.pt" if not train else "models/checkpoint.pt"
 if train:
   ctc_model.run()
+
+raise
 model = ctc_model.DigitsModel()
 model.load_state_dict(torch.load(model_file))
 print(model)

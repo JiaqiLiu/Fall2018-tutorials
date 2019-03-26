@@ -55,12 +55,13 @@ def make():
     for j in range(N + 1):
       img = np.append(img, np.zeros((36, (dist == j).sum())), axis=1)
       img = np.append(img, dataset_data[i, :, 28 * j:28 * (j + 1)], axis=1)
-    img = dataset_data[i, :, :]
+    img = dataset_data[i, :, :].astype(np.uint8)
     images.append(img)
     name = './images/img_' + \
         ''.join(map(lambda x: str(int(x)), dataset_labels[i])) + '.png'
     import imageio
-    imageio.imwrite(name, img.clip(0, 255))
+    imageio.imwrite(name, img)
+    print(f"saved img {name}")
   dataset_data = np.array(images)
 
   if not os.path.exists('./dataset'):
