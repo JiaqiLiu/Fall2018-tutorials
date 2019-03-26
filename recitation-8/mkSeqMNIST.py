@@ -26,8 +26,8 @@ def make():
 
   dataset_data = np.zeros((M, 36, 0))
   dataset_labels = np.zeros((M, 36, 0))
-  s = np.append(data.train_labels.view(-1, 1, 1).repeat(1,
-                                                        36, 1).numpy()[:M], ndata.numpy()[:M], axis=2)
+  s = np.append(data.train_labels.view(-1, 1, 1).repeat(
+      1, 36, 1).numpy()[:M], ndata.numpy()[:M], axis=2)
   for i in range(N):
     p = np.random.permutation(s)
     d = np.roll(p[:, :, 1:], (0, rint(-4, 4), 0), (0, 1, 2))

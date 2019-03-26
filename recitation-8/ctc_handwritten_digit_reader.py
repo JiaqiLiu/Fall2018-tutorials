@@ -52,9 +52,10 @@ probs = F.softmax(logits, dim=2).data.cpu()
 output, scores, timesteps, out_seq_len = decoder.decode(
     probs=probs, seq_lens=out_lengths)
 print(output.size())
+print(f'out_seq_len: {out_seq_len}')
+
 for i in range(output.size(0)):
   chrs = [label_map[o.item()] for o in output[i, 0, :out_seq_len[i, 0]]]
-
   image = data_batch[i].numpy()
   plt.figure()
   imshow(image, cmap='binary')
