@@ -175,6 +175,8 @@ def run():
       logits, input_lengths = model(data_batch.unsqueeze(1))
       # logits size: [86, 32, 11]
       print(f'logits: {logits.size()}')
+      print(f'label_batch: {label_batch.size()}')
+      raise
       loss = ctc.forward((logits, input_lengths, target_lengths), label_batch)
       loss.backward()
       optimizer.step()
