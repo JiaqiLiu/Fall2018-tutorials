@@ -14,7 +14,7 @@ def read_corpus():
                 if len(line.strip()) > 0:
                     lines.append(line)
     corpus = " ".join(lines)
-    '''Return the text'''
+    '''Return the text, as a string'''
     return corpus
 
 
@@ -31,12 +31,12 @@ def get_charmap(corpus):
 
 
 def map_corpus(corpus, charmap):
-    '''from char to index'''
+    '''from char to index, return indices'''
     return np.array([charmap[c] for c in corpus], dtype=np.int64)
 
 
 def to_text(line, charset):
-    '''from index to char'''
+    '''from index to char, return chars'''
     return "".join([charset[c] for c in line])
 
 
